@@ -24,6 +24,11 @@ public abstract class ChessPiece {
 	 * must be between 0-8 for row and A-H for col
 	 */
 	private Position pos;
+	// center of the image location on the screen
+	private int graphicsRow;
+	private int graphicsCol;
+	// height of each square on the screen
+	public static final int SQ_HEIGHT = 15;
 	
 	// the representative image of the piece
 	private String imageFile;
@@ -34,6 +39,10 @@ public abstract class ChessPiece {
 	// constructor
 	public ChessPiece(Position pos, String imageFile) {
 		this.pos = pos;
+		// need to map the position on the board to the graphics location on the screen
+		this.graphicsRow = pos.getRow()*SQ_HEIGHT - SQ_HEIGHT/2;
+		this.graphicsCol = pos.getCol()*SQ_HEIGHT - SQ_HEIGHT/2;
+		
 		this.imageFile = imageFile; //this is probably pointless
 		
 		try {
@@ -52,7 +61,7 @@ public abstract class ChessPiece {
 	}
 	
 	public void draw(Graphics g) {
-		g.drawImage(img, this.pos.getRow(), this.pos.getCol(), IMG_WIDTH, IMG_HEIGHT, null);
+		g.drawImage(img, graphicsCol, graphicsRow, IMG_WIDTH, IMG_HEIGHT, null);
 	}
 	 
 }
