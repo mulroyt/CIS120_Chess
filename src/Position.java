@@ -16,10 +16,10 @@ public class Position {
 	 */
 	
 	private int row;
-	private char col;
+	private int col;
 	
 	// constructor
-	public Position(int row, char col) {
+	public Position(int row, int col) {
 		if (row < 9 && row > 0) {
 			this.row = row;
 		} else {
@@ -37,7 +37,7 @@ public class Position {
 		return this.row;
 	}
 	
-	public char getCol() {
+	public int getCol() {
 		return this.col;
 	}
 	
@@ -50,7 +50,7 @@ public class Position {
 		}
 	}
 	
-	public void setCol(char newCol) {
+	public void setCol(int newCol) {
 		 if (col < 9 && col > 0) {
 		    	this.col = newCol;
 		    } else {
