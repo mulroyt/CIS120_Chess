@@ -37,8 +37,7 @@ public class GameBoard extends JPanel {
     public static final int COURT_HEIGHT = 1200;
 	
     // Game Colors
-    public static final Color WHITE = new Color(0, 0, 0);
-    public static final Color BLACK = new Color(255, 255, 255);
+    private Color c;
     
     // create the back end of the board using a 2D array of ChessPiece Objects
     public ChessPiece[][] boardBackEnd = new ChessPiece[8][8];
@@ -60,27 +59,27 @@ public class GameBoard extends JPanel {
     	this.clear();
     	// black pieces DO i need to number them ie pawn 1 pawn2 etc 
     	boardBackEnd[0][0] = new Rook();
-    	boardBackEnd[0][1] = new knight();
-    	boardBackEnd[0][2] = new bishop();
-    	boardBackEnd[0][3] = new queen();
-    	boardBackEnd[0][4] = new king();
-    	boardBackEnd[0][5] = new bishop();
-    	boardBackEnd[0][6] = new knight();
+    	boardBackEnd[0][1] = new Knight();
+    	boardBackEnd[0][2] = new Bishop();
+    	boardBackEnd[0][3] = new Queen();
+    	boardBackEnd[0][4] = new King();
+    	boardBackEnd[0][5] = new Bishop();
+    	boardBackEnd[0][6] = new Knight();
     	boardBackEnd[0][7] = new Rook();
     	for (int i = 0; i < 8; i++) {
-    		boardBackEnd[1][i] = new pawn();
+    		boardBackEnd[1][i] = new Pawn();
     	}
     	// white pieces
     	boardBackEnd[7][0] = new Rook();
-    	boardBackEnd[7][1] = new knight();
-    	boardBackEnd[7][2] = new bishop();
-    	boardBackEnd[7][3] = new queen();
-    	boardBackEnd[7][4] = new king();
-    	boardBackEnd[7][5] = new bishop();
-    	boardBackEnd[7][6] = new knight();
+    	boardBackEnd[7][1] = new Knight();
+    	boardBackEnd[7][2] = new Bishop();
+    	boardBackEnd[7][3] = new Queen();
+    	boardBackEnd[7][4] = new King();
+    	boardBackEnd[7][5] = new Bishop();
+    	boardBackEnd[7][6] = new Knight();
     	boardBackEnd[7][7] = new Rook();
     	for (int i = 0; i < 8; i++) {
-    		boardBackEnd[6][i] = new pawn();
+    		boardBackEnd[6][i] = new Pawn();
     	}
     }
     
@@ -93,7 +92,7 @@ public class GameBoard extends JPanel {
 			Point p = e.getPoint();
 			Position pos = getPos(p);
 			ChessPiece cp = boardBackEnd[pos.getCol()][pos.getRow()];
-			if (cp != null && cp.getColor().equals(WHITE)) { //not sure why the color isnt being recognized!!!
+			if (cp != null && cp.getColor().equals(Color.WHITE)) { 
 				mode = new WhiteEndMode(p, pos, cp); /* end mode takes in the graphics position e.getPoint and
 				 the array position of the piece, and the piece itself */
 				
@@ -135,7 +134,7 @@ public class GameBoard extends JPanel {
 			Point p = e.getPoint();
 			Position pos = getPos(p);
 			ChessPiece cp = boardBackEnd[pos.getCol()][pos.getRow()];
-			if (cp != null && cp.getColor().equals(BLACK)) { //not sure why the color isnt being recognized!!!
+			if (cp != null && cp.getColor().equals(Color.BLACK)) { 
 				mode = new BlackEndMode(p, pos, cp); /* end mode takes in the graphics position e.getPoint and
 				 the array position of the piece, and the piece itself */
 				
@@ -178,14 +177,27 @@ public class GameBoard extends JPanel {
         // creates border around the court area, JComponent method
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         
+        // TODO create the graphic representation of the board, map the boardBackEnd to the graphic rep
+        //create the checker board pattern from the GameSquare Objects 
+        for (int i = 0; i < 8; i++) {
+        	for (int j = 0; j < 8; j++) {
+        		if ((i + j) % 2 == 0) {
+        			c = Color.WHITE;
+        		} else {c = Color.BLACK;}
+        		new GameSquare(c);
+        		setLocation(i*150, j*150);
+        	}
+        }
+        
+        
         //CAN THIS BE CHANGED TO CLICK FOCUSABLE???? TODO
         // Enable keyboard focus on the court area. 
         // When this component has the keyboard focus, key events are handled by its key listener.
         setFocusable(true);
         
-        // TODO after every move set the focusable area to the other colors pieces 
-        // something like if (whiteTurn) { setFousable to squares occupied by white pieces} 
-        // else {setFocusable to squares occupied by black pieces}
+        Mouse mouseListener = new Mouse();
+        addMouseListener(mouseListener);
+        addMouseMotionListener(mouseListener);
         
         /* listener to tell if a click occurs in a space. click a space with a piece to start moving it
          * then click another square to move it there. check if the square is empty here, then check if 
@@ -195,10 +207,29 @@ public class GameBoard extends JPanel {
         this.status = status;
     }
     
+    // DONT THINK I NEED THIS ANYMORE
     // method to find all the array spaces occupied by white pieces
     // method to find all the array spaces occupied by black pieces
     
-    // TODO create the graphic representation of the board, map the boardBackEnd to the graphic rep
+    //Mouse class, handles mouse events in the board space and passes them the current mode
+    private class Mouse extends MouseAdapter {
+    	
+    	/* code that runs when the mouse is pressed inside the game board */
+    	@Override
+    	public void mousePressed(MouseEvent arg0) {
+    		mode.mousePressed(arg0);
+    	}
+    	
+    	@Override 
+    	public void mouseDragged(MouseEvent arg0) {
+    		mode.mouseDragged(arg0);
+    	}
+    	
+    	@Override
+    	public void mouseReleased(MouseEvent arg0) {
+    		mode.mouseReleased(arg0);
+    	}
+    }
     
     // TODO create a function called getPos that takes in a point and returns the nearest square
     public Position getPos(Point p) {
