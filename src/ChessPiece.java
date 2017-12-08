@@ -7,10 +7,6 @@
 import java.awt.Graphics;
 import java.awt.*;
 import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -106,6 +102,9 @@ public abstract class ChessPiece {
 		// TODO need to determine the interactions with the Graphics object, right now it is an input to draw, or 
 		// should each piece store its own Graphics object and draw takes in void
 	    g.setColor(c);
+	    Font currFont = g.getFont();
+	    Font newFont = currFont.deriveFont(currFont.getSize()*100); // This doesn't seem to work???
+	    g.setFont(newFont);
 		g.drawString(pieceCode, graphicsCol - IMG_WIDTH/2, graphicsRow - IMG_HEIGHT/2); //need to check these!!!!!
 		/* check the length and the offset */
 	}

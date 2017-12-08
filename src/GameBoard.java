@@ -81,6 +81,8 @@ public class GameBoard extends JPanel {
     	for (int i = 0; i < 8; i++) {
     		boardBackEnd[6][i] = new Pawn(new Position(6, i), Color.WHITE);
     	}
+    	repaint();
+    	mode = new WhiteStartMode();
     }
     
     /* instead of a boolean state, make a mode of each players turn */
@@ -130,6 +132,7 @@ public class GameBoard extends JPanel {
     		cp.move(pos.getRow(), pos.getCol()); // moves the piece how to make the graphics update?
     		mode = new BlackStartMode();
     		status.setText("Black Move");
+    		repaint();
     	}
     }
     
@@ -177,19 +180,20 @@ public class GameBoard extends JPanel {
     		repaint(); // what exactly does repaint do?
     		mode = new WhiteStartMode();
     		status.setText("White Move");
+    		repaint();
     	}
     }
     
-    private Mode mode = null; //probably set to WhiteStartMode
+    //private Mode mode = null; //probably set to WhiteStartMode
+    private Mode mode = new WhiteStartMode();
     
     public GameBoard(JLabel status) {
         // creates border around the court area, JComponent method
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         
-        // TODO create the graphic representation of the board, map the boardBackEnd to the graphic rep
-        //create the checker board pattern from the GameSquare Objects 
+        /* create the graphic representation of the board, map the boardBackEnd to the graphic rep
+         * create the checker board pattern from the GameSquare Objects */
        
-        
         for (int i = 0; i < 8; i++) {
         	for (int j = 0; j < 8; j++) {
         		if ((i + j) % 2 == 0) {
