@@ -105,8 +105,7 @@ public abstract class ChessPiece {
 	public void draw(Graphics g) {
 		// TODO need to determine the interactions with the Graphics object, right now it is an input to draw, or 
 		// should each piece store its own Graphics object and draw takes in void
-		g.setColor(c);
-		// g.drawImage(img, graphicsCol, graphicsRow, IMG_WIDTH, IMG_HEIGHT, null);
+	    g.setColor(c);
 		g.drawString(pieceCode, graphicsCol - IMG_WIDTH/2, graphicsRow - IMG_HEIGHT/2); //need to check these!!!!!
 		/* check the length and the offset */
 	}

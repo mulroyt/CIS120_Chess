@@ -4,8 +4,7 @@
  */
 
 import java.awt.*;
-import java.awt.Color;
-import javax.swing.*;
+
 
 
 /** 
@@ -17,14 +16,23 @@ import javax.swing.*;
  *
  */
 
-@SuppressWarnings("serial")
-public class GameSquare extends JPanel {
+public class GameSquare {
 	
-	private Dimension sideLength =  new Dimension(150, 150);
+	private int sideLength =  150;
+	private int xP;
+	private int yP;
 	
-	public GameSquare(Color c) {
-		super();
-		setBackground(c);
-		setSize(sideLength);
+	private Color c; 
+	
+	public GameSquare(Color c, int xP, int yP) {
+		this.c = c;
+		this.xP = xP;
+		this.yP = yP;
 	}
+	
+	
+    public void draw(Graphics g) {
+        g.setColor(this.c);
+        g.fillRect(xP, yP, sideLength, sideLength);
+    }
 }

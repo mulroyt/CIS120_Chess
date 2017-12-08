@@ -3,7 +3,7 @@
  * Thomas Mulroy
  */
 
-
+import java.awt.*;
 import java.awt.Color;
 
 /**
@@ -27,4 +27,10 @@ public class Rook extends ChessPiece {
 	}
 	
 	// TODO the game logic for how it is allowed to move
+	
+	//delegates the drawing to the super class
+	@Override 
+	public void draw(Graphics g) {
+		super.draw(g);
+	}
 }

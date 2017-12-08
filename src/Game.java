@@ -28,8 +28,8 @@ public class Game implements Runnable {
         status_panel.add(status);
 
         // Main playing area
-        final GameCourt court = new GameCourt(status);
-        frame.add(court, BorderLayout.CENTER);
+        final GameBoard board = new GameBoard(status);
+        frame.add(board, BorderLayout.CENTER);
 
         // Reset button
         final JPanel control_panel = new JPanel();
@@ -38,13 +38,13 @@ public class Game implements Runnable {
         // Note here that when we add an action listener to the reset button, we define it as an
         // anonymous inner class that is an instance of ActionListener with its actionPerformed()
         // method overridden. When the button is pressed, actionPerformed() will be called.
-        final JButton reset = new JButton("Reset");
-        reset.addActionListener(new ActionListener() {
+        final JButton newGame = new JButton("New Game");
+        newGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                court.reset();
+                board.NewGame();
             }
         });
-        control_panel.add(reset);
+        control_panel.add(newGame);
 
         // Put the frame on the screen
         frame.pack();
@@ -52,7 +52,7 @@ public class Game implements Runnable {
         frame.setVisible(true);
 
         // Start game
-        court.reset();
+        board.NewGame();
     }
 
     /**

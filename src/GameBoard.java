@@ -4,11 +4,8 @@
  */
 
 import java.awt.*;
-import java.awt.Color;
 import java.awt.event.*;
 import javax.swing.*;
-
-import java.awt.Component;
 
 /**
  * GameBoard
@@ -34,9 +31,11 @@ public class GameBoard extends JPanel {
 	private JLabel status; // displays if someone is in check or not
 	
 	// Game Constants 
-	public static final int COURT_WIDTH = 1200;
-    public static final int COURT_HEIGHT = 1200;
-	
+	public static final int BOARD_WIDTH = 1200;
+    public static final int BOARD_HEIGHT = 1200;
+    // the 2d array holding the visual
+    public GameSquare[][] boardVisual = new GameSquare[8][8];
+    
     // Game Colors
     private Color c;
     
@@ -54,11 +53,11 @@ public class GameBoard extends JPanel {
     }
     
     // create the start of the game -- pieces on their starting locations should this be a method
-    public void startMode() {
+    public void NewGame() {
     	// resets the pieces
     	// first clear all the old objects 
     	this.clear();
-    	// black pieces DO i need to number them ie pawn 1 pawn2 etc 
+    	// black pieces DO i need to number them i.e. pawn 1 pawn2 etc 
     	boardBackEnd[0][0] = new Rook(new Position(0, 0), Color.BLACK);
     	boardBackEnd[0][1] = new Knight(new Position(0, 1), Color.BLACK);
     	boardBackEnd[0][2] = new Bishop(new Position(0, 2), Color.BLACK);
@@ -97,7 +96,9 @@ public class GameBoard extends JPanel {
 				mode = new WhiteEndMode(p, pos, cp); /* end mode takes in the graphics position e.getPoint and
 				 the array position of the piece, and the piece itself */
 				
-			} else {mode = new WhiteStartMode();}
+			} else {mode = new WhiteStartMode();
+			status.setText("White Move");
+			}
     		
 		}
     }
@@ -128,6 +129,7 @@ public class GameBoard extends JPanel {
     		Position pos = getPos(p);
     		cp.move(pos.getRow(), pos.getCol()); // moves the piece how to make the graphics update?
     		mode = new BlackStartMode();
+    		status.setText("Black Move");
     	}
     }
     
@@ -140,7 +142,9 @@ public class GameBoard extends JPanel {
 				mode = new BlackEndMode(p, pos, cp); /* end mode takes in the graphics position e.getPoint and
 				 the array position of the piece, and the piece itself */
 				
-			} else {mode = new BlackStartMode();}
+			} else {mode = new BlackStartMode();
+			    status.setText("Black Move");
+			}
     		
 		}
     }
@@ -162,7 +166,7 @@ public class GameBoard extends JPanel {
     		// use this information to preview the pieces location -> need to interact with the piece class
     		// probably need to make a preview class b/c the piece class can only have the piece location?
     		// check out the draw method to see what is possible there
-    		cp.preview(p.x, p.y);
+    		cp.preview(p.x, p.y); //preview method in ChessPiece sets the graphics coordinates
     		repaint();
     	}
     	
@@ -172,6 +176,7 @@ public class GameBoard extends JPanel {
     		cp.move(pos.getRow(), pos.getCol()); // moves the piece how to make the graphics update?
     		repaint(); // what exactly does repaint do?
     		mode = new WhiteStartMode();
+    		status.setText("White Move");
     	}
     }
     
@@ -183,13 +188,16 @@ public class GameBoard extends JPanel {
         
         // TODO create the graphic representation of the board, map the boardBackEnd to the graphic rep
         //create the checker board pattern from the GameSquare Objects 
+       
+        
         for (int i = 0; i < 8; i++) {
         	for (int j = 0; j < 8; j++) {
         		if ((i + j) % 2 == 0) {
         			c = Color.WHITE;
         		} else {c = Color.BLACK;}
-        		new GameSquare(c);
-        		setLocation(i*150, j*150);
+        		boardVisual[i][j] = new GameSquare(c, i*150, j*150);
+        		
+        		// setLocation(i*150, j*150);
         	}
         }
         
@@ -243,4 +251,25 @@ public class GameBoard extends JPanel {
     	return pos;
     }
     
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
+    }
+    
+    @Override
+    public void paintComponent(Graphics g) {
+    	super.paintComponent(g);
+    	for (int i = 0; i < 8; i++) {
+    		for (int j = 0; j < 8; j++) {
+    			boardVisual[i][j].draw(g);
+    		}
+    	}
+    	for (int i = 0; i < 8; i++) {
+    		for (int j = 0; j < 8; j++) {
+    			if (boardBackEnd[i][j] != null) {
+    			    boardBackEnd[i][j].draw(g);
+    			}
+    		}
+    	}
+    }
 }
