@@ -11,8 +11,7 @@
 
 public class Position {
 	
-	/* following the standard convention the row is stored as an integer
-	 * the column is stored as a Char 
+	/* store the position as an int for the row and an int for the column
 	 */
 	
 	private int row;
@@ -20,12 +19,12 @@ public class Position {
 	
 	// constructor
 	public Position(int row, int col) {
-		if (row < 9 && row > 0) {
+		if (row < 8 && row >= 0) {
 			this.row = row;
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
-	    if (col < 9 && col > 0) {
+	    if (col < 8 && col >= 0) {
 	    	this.col = col;
 	    } else {
 	    	throw new IndexOutOfBoundsException();
@@ -43,7 +42,7 @@ public class Position {
 	
 	// setter
 	public void setRow(int newRow) {
-		if (row < 9 && row > 0) {
+		if (row < 8 && row >= 0) {
 			this.row = newRow;
 		} else {
 			throw new IndexOutOfBoundsException();
@@ -51,7 +50,7 @@ public class Position {
 	}
 	
 	public void setCol(int newCol) {
-		 if (col < 9 && col > 0) {
+		 if (col < 8 && col >= 0) {
 		    	this.col = newCol;
 		    } else {
 		    	throw new IndexOutOfBoundsException();

@@ -18,6 +18,7 @@ import java.awt.Component;
  * It contains the logic for the taking of pieces and the state of the game
  **/
 
+@SuppressWarnings("serial")
 public class GameBoard extends JPanel {
 	
 	/* the paint example uses classes for modes with a mode interface, should i do this??
@@ -58,28 +59,28 @@ public class GameBoard extends JPanel {
     	// first clear all the old objects 
     	this.clear();
     	// black pieces DO i need to number them ie pawn 1 pawn2 etc 
-    	boardBackEnd[0][0] = new Rook();
-    	boardBackEnd[0][1] = new Knight();
-    	boardBackEnd[0][2] = new Bishop();
-    	boardBackEnd[0][3] = new Queen();
-    	boardBackEnd[0][4] = new King();
-    	boardBackEnd[0][5] = new Bishop();
-    	boardBackEnd[0][6] = new Knight();
-    	boardBackEnd[0][7] = new Rook();
+    	boardBackEnd[0][0] = new Rook(new Position(0, 0), Color.BLACK);
+    	boardBackEnd[0][1] = new Knight(new Position(0, 1), Color.BLACK);
+    	boardBackEnd[0][2] = new Bishop(new Position(0, 2), Color.BLACK);
+    	boardBackEnd[0][3] = new Queen(new Position(0, 3), Color.BLACK);
+    	boardBackEnd[0][4] = new King(new Position(0, 4), Color.BLACK);
+    	boardBackEnd[0][5] = new Bishop(new Position(0, 5), Color.BLACK);
+    	boardBackEnd[0][6] = new Knight(new Position(0, 6), Color.BLACK);
+    	boardBackEnd[0][7] = new Rook(new Position(0, 7), Color.BLACK);
     	for (int i = 0; i < 8; i++) {
-    		boardBackEnd[1][i] = new Pawn();
+    		boardBackEnd[1][i] = new Pawn(new Position(1, i), Color.BLACK);
     	}
     	// white pieces
-    	boardBackEnd[7][0] = new Rook();
-    	boardBackEnd[7][1] = new Knight();
-    	boardBackEnd[7][2] = new Bishop();
-    	boardBackEnd[7][3] = new Queen();
-    	boardBackEnd[7][4] = new King();
-    	boardBackEnd[7][5] = new Bishop();
-    	boardBackEnd[7][6] = new Knight();
-    	boardBackEnd[7][7] = new Rook();
+    	boardBackEnd[7][0] = new Rook(new Position(7, 0), Color.WHITE);
+    	boardBackEnd[7][1] = new Knight(new Position(7, 1), Color.WHITE);
+    	boardBackEnd[7][2] = new Bishop(new Position(7, 2), Color.WHITE);
+    	boardBackEnd[7][3] = new Queen(new Position(7, 3), Color.WHITE);
+    	boardBackEnd[7][4] = new King(new Position(7, 4), Color.WHITE);
+    	boardBackEnd[7][5] = new Bishop(new Position(7, 5), Color.WHITE);
+    	boardBackEnd[7][6] = new Knight(new Position(7, 6), Color.WHITE);
+    	boardBackEnd[7][7] = new Rook(new Position(7, 7), Color.WHITE);
     	for (int i = 0; i < 8; i++) {
-    		boardBackEnd[6][i] = new Pawn();
+    		boardBackEnd[6][i] = new Pawn(new Position(6, i), Color.WHITE);
     	}
     }
     
@@ -119,6 +120,7 @@ public class GameBoard extends JPanel {
     		// probably need to make a preview class b/c the piece class can only have the piece location?
     		// check out the draw method to see what is possible there
     		cp.preview(p.x, p.y);
+    		repaint();
     	}
     	
     	public void mouseReleased(MouseEvent arg0) {
@@ -161,12 +163,14 @@ public class GameBoard extends JPanel {
     		// probably need to make a preview class b/c the piece class can only have the piece location?
     		// check out the draw method to see what is possible there
     		cp.preview(p.x, p.y);
+    		repaint();
     	}
     	
     	public void mouseReleased(MouseEvent arg0) {
     		Point p = arg0.getPoint();
     		Position pos = getPos(p);
     		cp.move(pos.getRow(), pos.getCol()); // moves the piece how to make the graphics update?
+    		repaint(); // what exactly does repaint do?
     		mode = new WhiteStartMode();
     	}
     }
@@ -231,9 +235,12 @@ public class GameBoard extends JPanel {
     	}
     }
     
-    // TODO create a function called getPos that takes in a point and returns the nearest square
+    // create a function called getPos that takes in a point and returns the nearest square
     public Position getPos(Point p) {
-		return null;
+		int r_x = p.x/ChessPiece.SQ_HEIGHT;
+		int r_y = p.y/ChessPiece.SQ_HEIGHT;
+		Position pos = new Position(r_x, r_y);
+    	return pos;
     }
     
 }
