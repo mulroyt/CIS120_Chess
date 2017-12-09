@@ -129,12 +129,18 @@ public class GameBoard extends JPanel {
     	public void mouseReleased(MouseEvent arg0) {
     		Point p = arg0.getPoint();
     		Position pos = getPos(p);
-    		cp.move(pos.getX(), pos.getY());
-    		boardBackEnd[pos.getX()][pos.getY()] = cp; 
-    		boardBackEnd[startPos.getX()][startPos.getY()] = null;
-    		mode = new BlackStartMode();
-    		status.setText("Black Move");
-    		repaint();
+    		//cp.move(pos.getX(), pos.getY());
+    		//boardBackEnd[pos.getX()][pos.getY()] = cp; 
+    		//boardBackEnd[startPos.getX()][startPos.getY()] = null;
+    		if (movePiece(cp, startPos, pos)) {
+   			     repaint(); 
+   	             mode = new BlackStartMode();
+   	             status.setText("Black Move");
+   		     } else {
+   			     cp.move(startPos.getX(), startPos.getY());
+   			     mode = new WhiteStartMode();
+   			     repaint();
+   	     	 }
     	}
     }
     
@@ -178,13 +184,18 @@ public class GameBoard extends JPanel {
     	public void mouseReleased(MouseEvent arg0) {
     		Point p = arg0.getPoint();
     		Position pos = getPos(p);
-    		cp.move(pos.getX(), pos.getY()); // moves the piece how to make the graphics update?
-    		boardBackEnd[pos.getX()][pos.getY()] = cp; 
-    		boardBackEnd[startPos.getX()][startPos.getY()] = null;
-    		repaint(); // what exactly does repaint do?
-    		mode = new WhiteStartMode();
-    		status.setText("White Move");
-    		repaint();
+    		//cp.move(pos.getX(), pos.getY()); // moves the piece how to make the graphics update?
+    		//boardBackEnd[pos.getX()][pos.getY()] = cp;  // make a method that does all three (move, update board back end and clear board back end
+    		//boardBackEnd[startPos.getX()][startPos.getY()] = null;
+    		 if (movePiece(cp, startPos, pos)) {
+    			 repaint(); 
+    	         mode = new WhiteStartMode();
+    	         status.setText("White Move");
+    		 } else {
+    			 cp.move(startPos.getX(), startPos.getY());
+    			 mode = new BlackStartMode();
+    			 repaint();
+    		 }
     	}
     }
     
@@ -201,11 +212,10 @@ public class GameBoard extends JPanel {
         for (int i = 0; i < 8; i++) {
         	for (int j = 0; j < 8; j++) {
         		if ((i + j) % 2 == 0) {
-        			c = Color.WHITE;
-        		} else {c = Color.BLACK;}
+        			c = Color.LIGHT_GRAY;
+        		} else {c = Color.GRAY;}
         		boardVisual[i][j] = new GameSquare(c, i*150, j*150);
         		
-        		// setLocation(i*150, j*150);
         	}
         }
         
@@ -251,12 +261,39 @@ public class GameBoard extends JPanel {
     	}
     }
     
-    // create a function called getPos that takes in a point and returns the nearest square
+    /* create a method called getPos that takes in a point and returns the nearest square 
+     * this feature snaps the piece to the center of the closest square */
     public Position getPos(Point p) {
 		int r_x = p.x/ChessPiece.SQ_HEIGHT;
 		int r_y = p.y/ChessPiece.SQ_HEIGHT;
 		Position pos = new Position(r_x, r_y);
     	return pos;
+    }
+    
+    /* method that is used by the mouseRealased method in the EndMode inner classes. It has four 
+     * functions, the first is to check if the move it valid on the most basic level, that is the 
+     * square is not occupied by ones own piece. The second is is to call ChessPiece.move.
+     * Next it updates boardBackEnd to place the new piece and clear the old space
+     */
+    public boolean movePiece(ChessPiece cp, Position start, Position end) {
+    	int eX = end.getX();
+    	int eY = end.getY();
+    	ChessPiece moveTo = boardBackEnd[eX][eY];
+    	int sX = start.getX();
+    	int sY = start.getY();
+    	if (moveTo == null || moveTo.getColor() == oppColor(cp)) {
+    		cp.move(eX,eY);
+    		boardBackEnd[eX][eY] = cp;
+    		boardBackEnd[sX][sY] = null;
+    		return true;
+    	} else { return false;}
+    }
+    
+    /* helper method that returns the opposite color */
+    public Color oppColor(ChessPiece cp) {
+    	if (cp.getColor() == Color.WHITE) {
+    		return Color.BLACK;
+    	} else { return Color.WHITE;}
     }
     
     @Override
