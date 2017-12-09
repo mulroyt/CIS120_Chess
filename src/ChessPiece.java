@@ -24,8 +24,8 @@ public abstract class ChessPiece {
 	 */
 	private Position pos;
 	// center of the piece location in the square
-	private int graphicsRow;
-	private int graphicsCol;
+	private int graphicsX;
+	private int graphicsY;
 	// height of each square on the screen
 	public static final int SQ_HEIGHT = 150;
 	
@@ -45,24 +45,10 @@ public abstract class ChessPiece {
 	public ChessPiece(Position pos, Color c) {
 		this.pos = pos;
 		// need to map the position on the board to the graphics location on the screen
-		this.graphicsRow = pos.getRow()*SQ_HEIGHT + SQ_HEIGHT/2;
-		this.graphicsCol = pos.getCol()*SQ_HEIGHT + SQ_HEIGHT/2;
-		
-		// this.imageFile = imageFile; //this is probably pointless
-		
-		// this.pieceCode = pieceCode;
+		this.graphicsX = pos.getX()*SQ_HEIGHT + SQ_HEIGHT/2;
+		this.graphicsY = pos.getY()*SQ_HEIGHT + SQ_HEIGHT/2;
 		
 		this.c = c; // setting the color of the piece
-		
-		/* try {
-            if (img == null) {
-                img = ImageIO.read(new File(this.imageFile));
-            }
-        } catch (IOException e) {
-            System.out.println("Internal Error:" + e.getMessage());
-        } */
-		
-	
 	}
 	
 	/* Method to set the piece code to only be called by the constructor of the specific piece
@@ -80,20 +66,20 @@ public abstract class ChessPiece {
 	}
 	
 	// move takes in a new position and calls the set methods in the position class
-	public void move(int row, int col) {
+	public void move(int x, int y) {
 		// call the function in the instance to see if it is a legal move?
-		pos.setRow(row);
-		pos.setCol(col);
+		pos.setX(x);
+		pos.setY(y);
 		// when the piece moves it needs to update the graphics position
-		graphicsRow = pos.getRow()*SQ_HEIGHT + SQ_HEIGHT/2;
-		graphicsCol = pos.getCol()*SQ_HEIGHT + SQ_HEIGHT/2;
+		graphicsX = pos.getX()*SQ_HEIGHT + SQ_HEIGHT/2;
+		graphicsY = pos.getY()*SQ_HEIGHT + SQ_HEIGHT/2; 
 		
 	}
 	
 	// something with the graphics row and graphics col for use with the preview in gameBoard
 	public void preview(int x, int y) {
-		graphicsCol = x;
-		graphicsRow = y;
+		graphicsX = x;
+		graphicsY = y;
 		
 	}
 	
@@ -103,10 +89,11 @@ public abstract class ChessPiece {
 		// should each piece store its own Graphics object and draw takes in void
 	    g.setColor(c);
 	    Font currFont = g.getFont();
-	    Font newFont = currFont.deriveFont(currFont.getSize()*100); // This doesn't seem to work???
+	    Font newFont = currFont.deriveFont(currFont.getSize()*1); // This doesn't seem to work???
 	    g.setFont(newFont);
-		g.drawString(pieceCode, graphicsCol - IMG_WIDTH/2, graphicsRow - IMG_HEIGHT/2); //need to check these!!!!!
-		/* check the length and the offset */
+	    g.drawString(pieceCode, graphicsX - 5, graphicsY); //need to check these!!!!!
+	    
+	    /* check the length and the offset */
 	}
 	 
 }

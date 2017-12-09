@@ -59,27 +59,27 @@ public class GameBoard extends JPanel {
     	this.clear();
     	// black pieces DO i need to number them i.e. pawn 1 pawn2 etc 
     	boardBackEnd[0][0] = new Rook(new Position(0, 0), Color.BLACK);
-    	boardBackEnd[0][1] = new Knight(new Position(0, 1), Color.BLACK);
-    	boardBackEnd[0][2] = new Bishop(new Position(0, 2), Color.BLACK);
-    	boardBackEnd[0][3] = new Queen(new Position(0, 3), Color.BLACK);
-    	boardBackEnd[0][4] = new King(new Position(0, 4), Color.BLACK);
-    	boardBackEnd[0][5] = new Bishop(new Position(0, 5), Color.BLACK);
-    	boardBackEnd[0][6] = new Knight(new Position(0, 6), Color.BLACK);
-    	boardBackEnd[0][7] = new Rook(new Position(0, 7), Color.BLACK);
+    	boardBackEnd[1][0] = new Knight(new Position(1, 0), Color.BLACK);
+    	boardBackEnd[2][0] = new Bishop(new Position(2, 0), Color.BLACK);
+    	boardBackEnd[3][0] = new Queen(new Position(3, 0), Color.BLACK);
+    	boardBackEnd[4][0] = new King(new Position(4, 0), Color.BLACK);
+    	boardBackEnd[5][0] = new Bishop(new Position(5, 0), Color.BLACK);
+    	boardBackEnd[6][0] = new Knight(new Position(6, 0), Color.BLACK);
+    	boardBackEnd[7][0] = new Rook(new Position(7, 0), Color.BLACK);
     	for (int i = 0; i < 8; i++) {
-    		boardBackEnd[1][i] = new Pawn(new Position(1, i), Color.BLACK);
+    		boardBackEnd[i][1] = new Pawn(new Position(i, 1), Color.BLACK);
     	}
     	// white pieces
-    	boardBackEnd[7][0] = new Rook(new Position(7, 0), Color.WHITE);
-    	boardBackEnd[7][1] = new Knight(new Position(7, 1), Color.WHITE);
-    	boardBackEnd[7][2] = new Bishop(new Position(7, 2), Color.WHITE);
-    	boardBackEnd[7][3] = new Queen(new Position(7, 3), Color.WHITE);
-    	boardBackEnd[7][4] = new King(new Position(7, 4), Color.WHITE);
-    	boardBackEnd[7][5] = new Bishop(new Position(7, 5), Color.WHITE);
-    	boardBackEnd[7][6] = new Knight(new Position(7, 6), Color.WHITE);
+    	boardBackEnd[0][7] = new Rook(new Position(0, 7), Color.WHITE);
+    	boardBackEnd[1][7] = new Knight(new Position(1, 7), Color.WHITE);
+    	boardBackEnd[2][7] = new Bishop(new Position(2, 7), Color.WHITE);
+    	boardBackEnd[3][7] = new Queen(new Position(3, 7), Color.WHITE);
+    	boardBackEnd[4][7] = new King(new Position(4, 7), Color.WHITE);
+    	boardBackEnd[5][7] = new Bishop(new Position(5, 7), Color.WHITE);
+    	boardBackEnd[6][7] = new Knight(new Position(6, 7), Color.WHITE);
     	boardBackEnd[7][7] = new Rook(new Position(7, 7), Color.WHITE);
     	for (int i = 0; i < 8; i++) {
-    		boardBackEnd[6][i] = new Pawn(new Position(6, i), Color.WHITE);
+    		boardBackEnd[i][6] = new Pawn(new Position(i, 6), Color.WHITE);
     	}
     	repaint();
     	mode = new WhiteStartMode();
@@ -93,7 +93,7 @@ public class GameBoard extends JPanel {
     	public void mousePressed(MouseEvent e) {
 			Point p = e.getPoint();
 			Position pos = getPos(p);
-			ChessPiece cp = boardBackEnd[pos.getCol()][pos.getRow()];
+			ChessPiece cp = boardBackEnd[pos.getX()][pos.getY()];
 			if (cp != null && cp.getColor().equals(Color.WHITE)) { 
 				mode = new WhiteEndMode(p, pos, cp); /* end mode takes in the graphics position e.getPoint and
 				 the array position of the piece, and the piece itself */
@@ -107,13 +107,13 @@ public class GameBoard extends JPanel {
     
     class WhiteEndMode extends MouseAdapter implements Mode {
     	Point modePoint;
-    	Position piecePos;
+    	Position startPos;
     	ChessPiece cp;
     	
     	WhiteEndMode(Point p, Position pos, ChessPiece cp) {
-    		modePoint = p;
-    		piecePos = pos;
-    		this.cp = cp;
+    		modePoint = p; // TODO is this correct?? p is now the originally clicked point (in the graphics context)
+    		startPos = pos; // The board back end position of the selected piece
+    		this.cp = cp; // The chess piece that has been selected
     	}
     	
     	public void mouseDragged(MouseEvent arg0) {
@@ -129,7 +129,9 @@ public class GameBoard extends JPanel {
     	public void mouseReleased(MouseEvent arg0) {
     		Point p = arg0.getPoint();
     		Position pos = getPos(p);
-    		cp.move(pos.getRow(), pos.getCol()); // moves the piece how to make the graphics update?
+    		cp.move(pos.getX(), pos.getY());
+    		boardBackEnd[pos.getX()][pos.getY()] = cp; 
+    		boardBackEnd[startPos.getX()][startPos.getY()] = null;
     		mode = new BlackStartMode();
     		status.setText("Black Move");
     		repaint();
@@ -140,7 +142,7 @@ public class GameBoard extends JPanel {
     	public void mousePressed(MouseEvent e) {
 			Point p = e.getPoint();
 			Position pos = getPos(p);
-			ChessPiece cp = boardBackEnd[pos.getCol()][pos.getRow()];
+			ChessPiece cp = boardBackEnd[pos.getX()][pos.getY()];
 			if (cp != null && cp.getColor().equals(Color.BLACK)) { 
 				mode = new BlackEndMode(p, pos, cp); /* end mode takes in the graphics position e.getPoint and
 				 the array position of the piece, and the piece itself */
@@ -154,12 +156,12 @@ public class GameBoard extends JPanel {
     
     class BlackEndMode extends MouseAdapter implements Mode {
     	Point modePoint;
-    	Position piecePos;
+    	Position startPos;
     	ChessPiece cp;
     	
     	BlackEndMode(Point p, Position pos, ChessPiece cp) {
     		modePoint = p;
-    		piecePos = pos;
+    		startPos = pos;
     		this.cp = cp;
     	}
     	
@@ -176,7 +178,9 @@ public class GameBoard extends JPanel {
     	public void mouseReleased(MouseEvent arg0) {
     		Point p = arg0.getPoint();
     		Position pos = getPos(p);
-    		cp.move(pos.getRow(), pos.getCol()); // moves the piece how to make the graphics update?
+    		cp.move(pos.getX(), pos.getY()); // moves the piece how to make the graphics update?
+    		boardBackEnd[pos.getX()][pos.getY()] = cp; 
+    		boardBackEnd[startPos.getX()][startPos.getY()] = null;
     		repaint(); // what exactly does repaint do?
     		mode = new WhiteStartMode();
     		status.setText("White Move");

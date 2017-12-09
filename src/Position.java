@@ -14,44 +14,44 @@ public class Position {
 	/* store the position as an int for the row and an int for the column
 	 */
 	
-	private int row;
-	private int col;
+	private int x_pos;
+	private int y_pos;
 	
 	// constructor
-	public Position(int row, int col) {
-		if (row < 8 && row >= 0) {
-			this.row = row;
+	public Position(int x, int y) {
+		if (x < 8 && x >= 0) {
+			this.x_pos = x;
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
-	    if (col < 8 && col >= 0) {
-	    	this.col = col;
+	    if (y < 8 && y >= 0) {
+	    	this.y_pos = y;
 	    } else {
 	    	throw new IndexOutOfBoundsException();
 	    }
 	}
 	
 	// getter
-	public int getRow() {
-		return this.row;
+	public int getX() {
+		return this.x_pos;
 	}
 	
-	public int getCol() {
-		return this.col;
+	public int getY() {
+		return this.y_pos;
 	}
 	
 	// setter
-	public void setRow(int newRow) {
-		if (row < 8 && row >= 0) {
-			this.row = newRow;
+	public void setX(int x) {
+		if (x < 8 && x >= 0) {
+			this.x_pos = x;
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
 	}
 	
-	public void setCol(int newCol) {
-		 if (col < 8 && col >= 0) {
-		    	this.col = newCol;
+	public void setY(int y) {
+		 if (y < 8 && y >= 0) {
+		    	this.y_pos = y;
 		    } else {
 		    	throw new IndexOutOfBoundsException();
 		    }
