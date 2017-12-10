@@ -4,6 +4,8 @@
  */
 
 import java.awt.Color;
+import java.util.TreeSet;
+import java.util.Set;
 
 /**
  * Bishop class
@@ -13,6 +15,7 @@ import java.awt.Color;
  **/
 
 public class Bishop extends ChessPiece {
+	private Set<Position> legalMoves;
 	
 	public Bishop(Position pos, Color c) {
 		super(pos, c);
@@ -22,9 +25,11 @@ public class Bishop extends ChessPiece {
 		} else {
 			super.setPieceCode("\u265D"); 
 		}
+		
+		legalMoves = new TreeSet<Position>();
 	}
 	
-	// TODO the game logic for how it is allowed to move
+	/* The game logic for how it is allowed to move */
 	public boolean legalMove(Position start, Position end, ChessPiece[][] boardState) {
 		int sX = start.getX();
         int sY = start.getY();
@@ -61,5 +66,21 @@ public class Bishop extends ChessPiece {
 				}
 			} return true;
 		}
+	}
+	
+	/* the set of legal moves */
+	public void setOfLegalMoves(Position start, ChessPiece[][] boardState) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (legalMove(start, new Position(i, j), boardState)) {
+					legalMoves.add(new Position(i, j));
+				}
+			}
+		}
+	}
+	
+	/* method to test membership of the legalMoves set */
+	public boolean isLegal(Position end) {
+		return legalMoves.contains(end);
 	}
 }

@@ -82,6 +82,7 @@ public class GameBoard extends JPanel {
     		boardBackEnd[i][6] = new Pawn(new Position(i, 6), Color.WHITE);
     	}
     	repaint();
+    	updateMoveSets();
     	mode = new WhiteStartMode();
     }
     
@@ -134,6 +135,7 @@ public class GameBoard extends JPanel {
     		//boardBackEnd[startPos.getX()][startPos.getY()] = null;
     		if (movePiece(cp, startPos, pos)) {
    			     repaint(); 
+   			     updateMoveSets();
    	             mode = new BlackStartMode();
    	             status.setText("Black Move");
    		     } else {
@@ -188,7 +190,8 @@ public class GameBoard extends JPanel {
     		//boardBackEnd[pos.getX()][pos.getY()] = cp;  // make a method that does all three (move, update board back end and clear board back end
     		//boardBackEnd[startPos.getX()][startPos.getY()] = null;
     		 if (movePiece(cp, startPos, pos)) {
-    			 repaint(); 
+    			 repaint();
+    			 updateMoveSets();
     	         mode = new WhiteStartMode();
     	         status.setText("White Move");
     		 } else {
@@ -281,7 +284,7 @@ public class GameBoard extends JPanel {
     	ChessPiece moveTo = boardBackEnd[eX][eY];
     	int sX = start.getX();
     	int sY = start.getY();
-    	if (!cp.legalMove(start, end, boardBackEnd)) {
+    	if (!cp.isLegal(end)) {
     		return false;
     	}
     	if (moveTo == null || moveTo.getColor() == oppColor(cp)) {
@@ -297,6 +300,19 @@ public class GameBoard extends JPanel {
     	if (cp.getColor() == Color.WHITE) {
     		return Color.BLACK;
     	} else { return Color.WHITE;}
+    }
+    
+    /* method used by the mouseReleased methods in the endMode inner classes. it updates each pieces set
+     * of legal moves based on the board state
+     */
+    private void updateMoveSets() {
+    	for (int i = 0; i < 8; i++) {
+    		for (int j = 0; j < 8; j++) {
+    			if (boardBackEnd[i][j] != null) {
+    				boardBackEnd[i][j].setOfLegalMoves(new Position(i, j), boardBackEnd);
+    			}
+    		}
+    	}
     }
     
     @Override

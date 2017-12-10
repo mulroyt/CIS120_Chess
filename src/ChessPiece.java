@@ -58,9 +58,6 @@ public abstract class ChessPiece {
 		this.pieceCode = code;
 	}
 	
-	// methods for click and drag moving of pieces
-	//TODO listeners etc to move pieces see the paint code for combination of button// line previews in canvas
-	
 	public Color getColor() {
 		return this.c;
 	}
@@ -85,8 +82,6 @@ public abstract class ChessPiece {
 	
 	// each piece can draw itself
 	public void draw(Graphics g) {
-		// TODO need to determine the interactions with the Graphics object, right now it is an input to draw, or 
-		// should each piece store its own Graphics object and draw takes in void
 	    g.setColor(c);
 	    Font currFont = g.getFont();
 	    Font newFont = currFont.deriveFont(currFont.getSize()*1); // This doesn't seem to work???
@@ -100,4 +95,12 @@ public abstract class ChessPiece {
 	 * the user input is a legal  move 
 	 */
 	public abstract boolean legalMove(Position start, Position end, ChessPiece[][] boardState);
+	
+	/* abstract method that must be defined in each subclass of ChessPiece. This method updates a 
+	 * set of legal moves based on the pieces position and the boardState
+	 */
+	public abstract void setOfLegalMoves(Position start, ChessPiece[][] boardState);
+	
+	/* method to test membership of the legalMoves set */
+	public abstract boolean isLegal(Position end);
 }

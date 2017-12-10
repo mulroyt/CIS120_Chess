@@ -4,6 +4,8 @@
  */
 
 import java.awt.Color;
+import java.util.TreeSet;
+import java.util.Set;
 
 /**
  * Queen class
@@ -14,6 +16,8 @@ import java.awt.Color;
 
 public class Queen extends ChessPiece {
 	
+	private Set<Position> legalMoves;
+	
 	public Queen(Position pos, Color c) {
 		super(pos, c);
 		
@@ -22,9 +26,12 @@ public class Queen extends ChessPiece {
 		} else {
 			super.setPieceCode("\u265B"); 
 		}
+		
+		legalMoves = new TreeSet<Position>();
 	}
 	
-	// TODO the game logic for how it is allowed to move
+	/* the game logic for how it is allowed to move
+	 */ 
 	public boolean legalMove(Position start, Position end, ChessPiece[][] boardState) {
 		int sX = start.getX();
         int sY = start.getY();
@@ -96,5 +103,24 @@ public class Queen extends ChessPiece {
 			}
 		} else {return false;}
 		
+	}
+	
+	/* The set of legal moves. Store the available moves in a set that is updated after a piece
+	 * moves. This set can be used for determining the state of the game i.e.
+	 * check/checkmate/stalemate
+	 */
+	public void setOfLegalMoves(Position start, ChessPiece[][] boardState) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (legalMove(start, new Position(i, j), boardState)) {
+					legalMoves.add(new Position(i, j));
+				}
+			}
+		}
+	}
+	
+	/* method to test membership of the legalMoves set */
+	public boolean isLegal(Position end) {
+		return legalMoves.contains(end);
 	}
 }

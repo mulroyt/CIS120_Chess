@@ -9,7 +9,7 @@
 * it maintains that the position is on the board
 * */
 
-public class Position {
+public class Position implements Comparable<Object> {
 	
 	/* store the position as an int for the row and an int for the column
 	 */
@@ -55,5 +55,19 @@ public class Position {
 		    } else {
 		    	throw new IndexOutOfBoundsException();
 		    }
+	}
+
+	@Override
+	public int compareTo(Object otherPos) {
+		if (otherPos.getClass() == Position.class) {
+			Position pos = (Position) otherPos;
+			if (this.x_pos*10 + y_pos < pos.getX()*10 + pos.getY()) {
+				return -1;
+			} else if (this.x_pos*10 + y_pos > pos.getX()*10 + pos.getY()) {
+				return 1;
+			}
+			return 0;
+		}
+		return 0;
 	}
 }
