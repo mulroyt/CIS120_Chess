@@ -3,7 +3,6 @@
  * Thomas Mulroy
  */
 
-import java.awt.*;
 import java.awt.Color;
 
 /**
@@ -23,7 +22,6 @@ public class Rook extends ChessPiece {
 		} else {
 			super.setPieceCode("\u265C"); 
 		}
-		
 	}
 	
 	// TODO the game logic for how it is allowed to move
@@ -35,15 +33,15 @@ public class Rook extends ChessPiece {
 		
 		if (Math.abs(sX - eX) > 0 && sY - eY == 0) {
 			if (eX > sX) {
-				for (int i = sX + 1; i <= eX - sX; i++) {
-					if (boardState[eY][i] != null) {
+				for (int i = sX + 1; i < eX; i++) {
+					if (boardState[i][eY] != null) {
 						return false;
 					}
-				} 
+				} 	
 				return true;
 			} else {
-				for (int i = eX; i < sX - eX; i++) {
-					if (boardState[eY][i] != null) {
+				for (int i = eX + 1; i < sX; i++) {
+					if (boardState[i][eY] != null) {
 						return false;
 					}
 				}
@@ -51,14 +49,14 @@ public class Rook extends ChessPiece {
 			}			
 		} else if (sX - eX == 0 && Math.abs(sY - eY) > 0) {
 			if (eY > sY) {
-				for (int i = sY + 1; i <= eY - sY; i++) {
+				for (int i = sY + 1; i < eY; i++) {
 					if (boardState[eX][i] != null) {
 						return false;
 					}
 				} 
 				return true;
 			} else {
-				for (int i = eY; i < sY - eY; i++) {
+				for (int i = eY + 1; i < sY - eY; i++) {
 					if (boardState[eX][i] != null) {
 						return false;
 					}
