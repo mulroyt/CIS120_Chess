@@ -95,5 +95,9 @@ public abstract class ChessPiece {
 	    
 	    /* check the length and the offset */
 	}
-	 
+	
+	/* abstract method that must be defined in each subclass of ChessPiece. This method checks if
+	 * the user input is a legal  move 
+	 */
+	public abstract boolean legalMove(Position start, Position end, ChessPiece[][] boardState);
 }

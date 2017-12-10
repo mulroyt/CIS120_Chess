@@ -14,6 +14,7 @@ import java.awt.Color;
  **/
 
 public class Pawn extends ChessPiece {
+	private Color c;
 	
 	public Pawn(Position pos, Color c) {
 		super(pos, c);
@@ -23,7 +24,40 @@ public class Pawn extends ChessPiece {
 		} else {
 			super.setPieceCode("\u265F"); 
 		}
+		
+		this.c = c;
 	}
 	
 	// TODO the game logic for how it is allowed to move
+	public boolean legalMove(Position start, Position end, ChessPiece[][] boardState) {
+		int sX = start.getX();
+		int sY = start.getY();
+		int eX = end.getX();
+		int eY = end.getY();
+		ChessPiece endSquare = boardState[eX][eY];
+		
+		if (c == Color.WHITE) {
+			if (Math.abs(sX - eX) == 1 && sY - eY == 1 && endSquare != null) {
+				if (endSquare.getColor() == Color.BLACK) {
+				return true;
+				}
+			}
+			if (sY - eY == 2 && sY == 6 && sX - eX == 0 && endSquare == null) {
+				return true;
+			} else if (sY - eY == 1 && sX - eX == 0 && endSquare == null) {
+				return true;
+			} else {return false;}
+		} else if (Math.abs(sX - eX) == 1 && eY - sY == 1 && endSquare != null) {
+			if (endSquare.getColor() == Color.WHITE) {
+			    return true;
+			}
+		}
+	    if (eY - sY == 2 && sY == 1 && sX - eX == 0 && endSquare == null) {
+			return true;
+		} else if (eY - sY == 1 && sX - eX == 0 && endSquare == null) {
+			return true;
+		}
+		return false;
+	}
+	
 }

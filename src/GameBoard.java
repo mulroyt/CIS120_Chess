@@ -281,6 +281,9 @@ public class GameBoard extends JPanel {
     	ChessPiece moveTo = boardBackEnd[eX][eY];
     	int sX = start.getX();
     	int sY = start.getY();
+    	if (!cp.legalMove(start, end, boardBackEnd)) {
+    		return false;
+    	}
     	if (moveTo == null || moveTo.getColor() == oppColor(cp)) {
     		cp.move(eX,eY);
     		boardBackEnd[eX][eY] = cp;
