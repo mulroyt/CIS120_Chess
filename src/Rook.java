@@ -56,7 +56,7 @@ public class Rook extends ChessPiece {
 				} 
 				return true;
 			} else {
-				for (int i = eY + 1; i < sY - eY; i++) {
+				for (int i = eY + 1; i < sY; i++) {
 					if (boardState[eX][i] != null) {
 						return false;
 					}
