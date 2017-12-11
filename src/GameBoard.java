@@ -23,7 +23,7 @@ public class GameBoard extends JPanel {
 	
 	// state of the game board
 	public boolean check; // not the best way to do this??
-	public boolean checkMate;
+	public boolean checkMate; 
 	public boolean StaleMate;
 	public boolean startMode; // before any pieces have been moved
 	// public boolean whiteTurn = true; //white has the first move
@@ -43,7 +43,7 @@ public class GameBoard extends JPanel {
     public ChessPiece[][] boardBackEnd = new ChessPiece[8][8];
     // HOW DO I DEAL WITH EMPTY SPACES???? 
     
-    // TODO make method that clears the board of all objects
+    /* make method that clears the board of all objects */
     public void clear() {
     	for (int i = 0; i < 8; i ++) {
     		for (int j = 0; j < 8; j++) {
@@ -302,8 +302,8 @@ public class GameBoard extends JPanel {
     	} else { return Color.WHITE;}
     }
     
-    /* method used by the mouseReleased methods in the endMode inner classes. it updates each pieces set
-     * of legal moves based on the board state
+    /* method used by the mouseReleased methods in the endMode inner classes. it updates each
+     * pieces set of legal moves based on the board state
      */
     private void updateMoveSets() {
     	for (int i = 0; i < 8; i++) {
@@ -314,6 +314,34 @@ public class GameBoard extends JPanel {
     		}
     	}
     }
+    
+    /* method that determines if the opposing player is in check after every move. It will be used
+     * by the mouseReleased methods in the EndMode inner classes.
+     */
+    public boolean inCheck(Color c) { //every piece should call this as part of legal moves 
+    	Position kp = null;
+    	for (int i = 0; i < 8; i++) {
+    		for (int j = 0; j < 8; j++) {
+    			if (boardBackEnd[i][j].getClass() == King.class &&
+    			boardBackEnd[i][j].getColor() == c) {
+    				kp = new Position(i, j);
+    				break;
+    			} 
+    		} 
+    	}
+    	for (int i = 0; i < 8; i++) {
+    		for (int j = 0; j < 8; j++) {
+    			if (boardBackEnd[i][j] != null && boardBackEnd[i][j].getColor() != c) {
+    				if (boardBackEnd[i][j].isLegal(kp)) {
+    					return true; // i.e. opposing play is in check
+    				}
+    			}
+    		}
+    	}
+    	return false;
+    }
+    
+    
     
     @Override
     public Dimension getPreferredSize() {

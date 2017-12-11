@@ -53,6 +53,7 @@ public class Knight extends ChessPiece {
 	 * the end square for the membership of this set?? 
 	 */
 	public void setOfLegalMoves(Position start, ChessPiece[][] boardState) {
+		legalMoves.clear();
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				if (legalMove(start, new Position(i, j), boardState)) {

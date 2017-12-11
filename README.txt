@@ -11,13 +11,20 @@ PennKey: _______
   is an approprate use of the concept. Incorporate the feedback you got after
   submitting your proposal.
 
-  1.
+  1. 2D arrays: This feature is natural to display the gameboard which is a 2d arrangment of 
+  squares. For the same reason it makes sense to store the pieces locations in another 2d array.
+  I followed the array[x][y] convention throughout the game.
+  
+  2. Sub-typing/Dynamic Dispatch: I used subytping through out the game by creating a general
+  ChessPiece class. Each of the six specific types of pieces were a subtype of this Class. 
+  This allows for much easier event handling and delegating the specific logic for the allowed 
+  movements to each specific piece, while generalizing commands such as move.
+  
+  3. Collections: Each instance of ChessPiece stores a Set of legal moves. This is a natural 
+  choice because there cannot be any duplicates and there is no order. This is used to check
+  the legality of a move and to determine if the King is in Check.
 
-  2.
-
-  3.
-
-  4.
+  4. Testable Components: 
 
 
 =========================
